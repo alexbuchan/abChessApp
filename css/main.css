@@ -1,0 +1,71 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("../images/background-img.jpg");
+  background-size: 90% 110%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.graveyard {
+  color: white;
+  text-align: center;
+  width: 200px;
+  height: 400px;
+  background-image: url("../images/board-wood.jpg");
+  top: 100px;
+  box-shadow: 10px 10px 10px #111;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.whiteGraveyard {
+  float: left;
+  margin-top: 10%;
+  margin-left: 7%;
+}
+
+.blackGraveyard {
+  float: right;
+  margin-top: 10%;
+  margin-right: 7%;
+}
+
+.container {
+  width: 640px;
+  height: 640px;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 10px 10px 10px #111;
+}
+
+#game-board {
+  background-color: brown;
+  width: 600px;
+  height: 600px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 5px;
+  background-image: url("../images/board-wood.jpg");
+}
+
+.tile {
+  float: left;
+  height: 75px;
+  width: 75px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 2px #111;
+}
+
+.blackTile {
+    background-color: black;
+    background-image: url("../images/black-tile-background.jpg");
+}
+
+.whiteTile {
+    background-color: gray;
+    background-image: url("../images/white-tile-background.jpg");
+}
