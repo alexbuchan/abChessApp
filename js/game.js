@@ -1,4 +1,9 @@
 
+
+//GOAL 1: Get pieces to appear on the board in the right spots.
+//GOAL 2: Make them draggable.
+
+
 function Game() {
   this.boardSize = 8;                             //Board size (Not going to change obviously).
   this.generateTiles();                           //Generate game board with tiles.
@@ -22,11 +27,17 @@ Game.prototype.generateTiles = function() {
   }
 };
 
+Game.prototype.addPieces = function (chessObjects) {
+  $('.tile[data-row=' + chessObjects.black_BPawn.location.row + '][data-col=' + chessObjects.black_BPawn.location.column + ']').append('<div><img src=' + chessObjects.black_BPawn.image + '></div>');
+  $('.tile[data-row=' + chessObjects.white_BPawn.location.row + '][data-col=' + chessObjects.white_BPawn.location.column + ']').append('<div><img src=' + chessObjects.black_BPawn.image + '></div>');
+};
+
 var game;
 
 $(document).ready(function() {
 
   game = new Game();
+  game.addPieces(chessObjects);
 
   //This is how to append the piece image to all tiles...
   //$(".tile").append('<img src="./images/black-king.svg">');
