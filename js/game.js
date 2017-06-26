@@ -28,8 +28,13 @@ Game.prototype.generateTiles = function() {
 };
 
 Game.prototype.addPieces = function (chessObjects) {
-  $('.tile[data-row=' + chessObjects.black_BPawn.location.row + '][data-col=' + chessObjects.black_BPawn.location.column + ']').append('<div><img src=' + chessObjects.black_BPawn.image + '></div>');
-  $('.tile[data-row=' + chessObjects.white_BPawn.location.row + '][data-col=' + chessObjects.white_BPawn.location.column + ']').append('<div><img src=' + chessObjects.black_BPawn.image + '></div>');
+  //$('.tile[data-row=' + chessObjects.black_BPawn.location.row + '][data-col=' + chessObjects.black_BPawn.location.column + ']').append('<div><img src=' + chessObjects.black_BPawn.image + '></div>');
+  //$('.tile[data-row=' + chessObjects.white_BPawn.location.row + '][data-col=' + chessObjects.white_BPawn.location.column + ']').append('<div><img src=' + chessObjects.black_BPawn.image + '></div>');
+  for (var objectIndex in chessObjects) {
+    var object = chessObjects[objectIndex];
+    console.log(object.name);
+    $('.tile[data-row=' + object.location.row + '][data-col=' + object.location.column + ']').append('<div><img src=' + object.image + '></div>');
+  }
 };
 
 var game;
@@ -55,14 +60,15 @@ function generate_HTML_Tag(tagType, tagValue) {
     var args = Array.prototype.slice.call(arguments);
     counter++;
     var openingTag = '<' + tagType;
-    if (tagValue===undefined) {var value = ">"} else {var value = '>' + tagValue};
+    if (tagValue===undefined) {var value = ">";}
+    else {value = '>' + tagValue;}
     var closingTag = '</' + tagType + '>';
     var arr1 = [openingTag];
     args.map(function(attribute, index) {
-      if (index%2===0) { return arr1.push(" " + attribute + '=') }
-      else { return arr1.push('"' + attribute + '"') }
+      if (index%2===0) { return arr1.push(" " + attribute + '='); }
+      else { return arr1.push('"' + attribute + '"'); }
     });
     arr1.push(value, closingTag);
     return arr1.join("");
-  }
+  };
 }
