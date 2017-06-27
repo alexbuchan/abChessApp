@@ -1,7 +1,10 @@
 
 
-//GOAL 1: Get pieces to appear on the board in the right spots.
-//GOAL 2: Make them draggable.
+//GOAL 1: Get pieces to appear on the board in the right spots. DONE
+//GOAL 2: Make them draggable. DONE
+//GOAL 3: Draggable pieces must adhere to tiles. KINDA
+//GOAL 4: No more than one piece should be present in a tile at once.
+//GOAL 5: Implement piece rules.
 
 
 function Game() {
@@ -29,18 +32,31 @@ Game.prototype.generateTiles = function() {
 Game.prototype.addPieces = function (chessObjects) {
   for (var objectIndex in chessObjects) {
     var object = chessObjects[objectIndex];
-    console.log(object.name);
-    $('.tile[data-row=' + object.location.row + '][data-col=' + object.location.column + ']')
-      .append($('<img>')
-      .addClass("piece")
-      .attr("src", object.image)
+    var piece = $('.tile[data-row=' + object.location.row + '][data-col=' + object.location.column + ']');
+    piece.append($('<img>').addClass("piece").attr("src", object.image)
     );
+    if (object.pieceType === "White") {
+      piece.attr("pieceType", "white");
+    }
+    else {
+      piece.attr("pieceType", "black");
+    }
   }
 };
 
-function whattaDrag() {
-    $(".piece").draggable();
-    $(".tile").droppable();
+function movePieces(turn) {
+  $(".piece").draggable({
+    snap: '.tile'
+  });
+  $(".tile").droppable({
+    accept: function(element) {
+      return element.hasClass("acceptable");
+    }
+  });
+  $("a").bind("click", function(event) {
+    event.preventDefault();
+    $(".draggable").toggleClass("acceptable");
+  });
 }
 
 //Generic Functions
@@ -54,11 +70,35 @@ function createCheckerboardDesign() {
 
 
 var game;
+var run = true;
+var whiteTurn = true;
+var blackTurn = false;
+var turn = [];
 $(document).ready(function() {
-
   game = new Game();
   game.addPieces(chessObjects);
-  whattaDrag();
+  movePieces(turn);
+  // $("html").on("dragover", function() {
+  //   $(this).addClass("dragging");
+  // });
+  // $("html").on("dragleave", function() {
+  //   $(this).removeClass("dragging");
+  // });
+  // $("html").on("drop", function(event){
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   console.log("Dropped!");
+  // });
 
+
+  // while (run) {
+  //   if (whiteTurn === true) {
+  //     $("[pieceType=black]").droppable("disable");
+  //   }
+  //   if (blackTurn === true) {
+  //     $("[pieceType=white]").droppable("disable");
+  //   }
+  //   run = false;
+  // }
 
 });
