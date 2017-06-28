@@ -1,9 +1,9 @@
 
 //Ctrl + Cmd + G ---> Select all occurences of something
 
-function Piece(name, pieceType, location, image, rule) {
+function Piece(name, color, location, image, rule) {
     this.name = name;
-    this.pieceType = pieceType;
+    this.color = color;
     this.location = location;
     this.image = image;
     this.rule = rule;
@@ -11,15 +11,15 @@ function Piece(name, pieceType, location, image, rule) {
 
 
 
-function Pawn(name, pieceType, location, image, rule) {
-  Piece.call(this, name, pieceType, location, image, rule);
+function Pawn(name, color, location, image, rule) {
+  Piece.call(this, name, color, location, image, rule);
 
 }
 Pawn.prototype = Object.create(Piece.prototype);
 Pawn.prototype.constructor = Pawn;
 
-function Knight(name, pieceType, location, image, rule) {
-  Piece.call(this, name, pieceType, location, image, rule);
+function Knight(name, color, location, image, rule) {
+  Piece.call(this, name, color, location, image, rule);
 }
 Knight.prototype = Object.create(Piece.prototype);
 Knight.prototype.constructor = Knight;
@@ -29,26 +29,26 @@ Knight.prototype.constructor = Knight;
 //   movesArray = []
 // }
 
-function Bishop(name, pieceType, location, image, rule) {
-  Piece.call(this, name, pieceType, location, image, rule);
+function Bishop(name, color, location, image, rule) {
+  Piece.call(this, name, color, location, image, rule);
 }
 Bishop.prototype = Object.create(Piece.prototype);
 Bishop.prototype.constructor = Bishop;
 
-function Rook(name, pieceType, location, image, rule) {
-  Piece.call(this, name, pieceType, location, image, rule);
+function Rook(name, color, location, image, rule) {
+  Piece.call(this, name, color, location, image, rule);
 }
 Rook.prototype = Object.create(Piece.prototype);
 Rook.prototype.constructor = Rook;
 
-function Queen(name, pieceType, location, image, rule) {
-  Piece.call(this, name, pieceType, location, image, rule);
+function Queen(name, color, location, image, rule) {
+  Piece.call(this, name, color, location, image, rule);
 }
 Queen.prototype = Object.create(Piece.prototype);
 Queen.prototype.constructor = Queen;
 
-function King(name, pieceType, location, image, rule) {
-  Piece.call(this, name, pieceType, location, image, rule);
+function King(name, color, location, image, rule) {
+  Piece.call(this, name, color, location, image, rule);
 }
 King.prototype = Object.create(Piece.prototype);
 King.prototype.constructor = King;
@@ -106,7 +106,7 @@ black_HPawn : new Pawn("Black H Pawn", "Black", {row : 1, column : 7}, "./images
 //
 // for (var objectIndex in chessObjects) {
 //   var object = chessObjects[objectIndex];
-//   console.log(object.pieceType);
+//   console.log(object.color);
 // }
 
 //$('."", tile[data-row=0][data-col=0]').append('<div class="piece"><img src="' + black_APawn.image + '"></div>');

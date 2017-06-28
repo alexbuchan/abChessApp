@@ -33,13 +33,20 @@ Game.prototype.generateTiles = function() {
 Game.prototype.addPieces = function (chessObjects) {
   for (var objectIndex in chessObjects) {
     var object = chessObjects[objectIndex];
-    var piece = $('.tile[data-row=' + object.location.row + '][data-col=' + object.location.column + ']');
-    piece.append($('<img>').addClass("piece").attr("src", object.image).attr("name", object.name));
-    if (object.pieceType === "White") {
-      piece.attr("pieceType", "white");
+    var tile = $('.tile[data-row=' + object.location.row + '][data-col=' + object.location.column + ']');
+    tile.append($('<img>')
+      .addClass("piece")
+      .attr("alive", true)
+      .attr("name", object.name)
+      .attr("src", object.image)
+    );
+
+    if (object.color === "White") {
+      $('.piece[name="' + object.name + '"]').attr("color", "white");
+      //piece.attr("color", "white");
     }
     else {
-      piece.attr("pieceType", "black");
+      $('.piece[name="' + object.name + '"]').attr("color", "black");
     }
   }
 };
@@ -67,7 +74,6 @@ function onClickInfo(event, ui) {
   var yCoor = $(this).parent().attr("data-row");
   var tileLength = $(this).length;
   console.log("Initial Position of", $(this).attr("name"), ": [", yCoor, ",", xCoor, "]");
-  //ui.helper.remove();
 }
 
 function dropItemInfo(event, ui) {
@@ -77,10 +83,10 @@ function dropItemInfo(event, ui) {
   var tileColumn = parseInt($(this).attr("data-col"));
   console.log("tile:", tile);
   console.log("Final Position of piece: [", tileRow, ",", tileColumn, "]");
-  // console.log(chessPiece.attr("name"), "has been received by tile", tileXCoor, tileYCoor);
   $(this).append($(chessPiece).css({"top": 0, "left":0}));
   _findTile(tileRow, tileColumn);
-  //.append($('<img>').addClass("piece").attr("src", object.image).attr("name", object.name));
+  console.log("color", chessPiece.attr("color"));
+  //detectColor(tile);
 }
 
 
@@ -99,8 +105,14 @@ function _findTile(row, col) {
   console.log("Pieces within tile [", row, ",", col, "] =>", tileLength);
 }
 
-function collisionDetect() {
+function collisionDetect(tile) {
+  if (tile.length > 1) {
 
+  }
+}
+
+function detectColor(tile) {
+  console.log(tile.children().attr("color"));
 }
 
 var game;
@@ -115,14 +127,12 @@ $(document).ready(function() {
 
 });
 
-
-//Create piece
-//Piece is an object with various attributes
-//Each piece is draggable on chess board tiles.
 //Each piece should be aware of which tile they are on. (Necessary for legitimate moves by pieces)
 //Tile should keep a count of pieces it has on it.  (Necessary when taking an opponenets pieces)
-
-
-//Make a clone of the image when it lands on the tile.
-//This will surely be on top or under the original piece. Then just remove the original piece.
 //Have an "active" class representing dead or alive. If it is dead, whisk it to the side in your premade graveyards
+
+
+//COLLISION DETECTION AND DEATH
+//Piece color will influence whether collisionDetect will not allow it to move to the same div (and not be appended)
+//If piece is different colour then allow the move and then modify the class alive to false for
+//first image in tile.children() (element 0).
