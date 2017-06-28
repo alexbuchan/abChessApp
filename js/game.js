@@ -72,21 +72,23 @@ function movePieces(turn) {
 function onClickInfo(event, ui) {
   var xCoor = $(this).parent().attr("data-col");
   var yCoor = $(this).parent().attr("data-row");
-  var tileLength = $(this).length;
+  var tile = $(this).parent();
   console.log("Initial Position of", $(this).attr("name"), ": [", yCoor, ",", xCoor, "]");
+  console.log("tile", tile);
+  console.log("End onClickInfo()");
 }
 
 function dropItemInfo(event, ui) {
-  var chessPiece = ui.draggable;
   var tile = $(this);
+  var chessPiece = ui.draggable;
   var tileRow = parseInt($(this).attr("data-row"));
   var tileColumn = parseInt($(this).attr("data-col"));
   console.log("tile:", tile);
   console.log("Final Position of piece: [", tileRow, ",", tileColumn, "]");
   $(this).append($(chessPiece).css({"top": 0, "left":0}));
   _findTile(tileRow, tileColumn);
-  console.log("color", chessPiece.attr("color"));
-  //detectColor(tile);
+  collisionDetect(ui, event, tile);
+  // detectColor(tile);
 }
 
 
@@ -105,14 +107,33 @@ function _findTile(row, col) {
   console.log("Pieces within tile [", row, ",", col, "] =>", tileLength);
 }
 
-function collisionDetect(tile) {
-  if (tile.length > 1) {
+function collisionDetect(ui, event, tile) {
+  var sameColor = detectColor(tile);
+  console.log("sameColor", sameColor);
+  var childrenArray = tile.children();
+  var victim = $(childrenArray[0]);
+  var attacker = $(childrenArray[1]);
+  kill(ui, event, tile, victim);
+}
 
+function kill(ui, event, tile, victim) {
+  var sameColor = detectColor(tile);
+  if (!sameColor) {
+    victim.remove();
+    ui.draggable.draggable({revert: true});
   }
 }
 
+
 function detectColor(tile) {
-  console.log(tile.children().attr("color"));
+  console.log("Start Function detectColor()");
+  var childrenArray = tile.children();
+  if (childrenArray.length <= 1) { return "No detection needed."; }
+  var victimColor = $(childrenArray[0]).attr("color");
+  var attackerColor = $(childrenArray[1]).attr("color");
+  console.log(victimColor === attackerColor);
+  if (victimColor === attackerColor) { return true; }
+  else { return false; }
 }
 
 var game;
@@ -126,10 +147,6 @@ $(document).ready(function() {
   movePieces(turn);
 
 });
-
-//Each piece should be aware of which tile they are on. (Necessary for legitimate moves by pieces)
-//Tile should keep a count of pieces it has on it.  (Necessary when taking an opponenets pieces)
-//Have an "active" class representing dead or alive. If it is dead, whisk it to the side in your premade graveyards
 
 
 //COLLISION DETECTION AND DEATH
