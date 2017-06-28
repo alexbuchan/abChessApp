@@ -40,7 +40,7 @@ Game.prototype.addPieces = function (chessObjects) {
       .attr("name", object.name)
       .attr("src", object.image)
     );
-
+    tile.attr("hosting", true);
     if (object.color === "White") {
       $('.piece[name="' + object.name + '"]').attr("color", "white");
       //piece.attr("color", "white");
@@ -53,10 +53,10 @@ Game.prototype.addPieces = function (chessObjects) {
 
 function movePieces(turn) {
   $(".piece").draggable({
-    //snap: '.tile',
     start: onClickInfo
   });
   $(".tile").droppable({
+    // accept : $(".piece").parent().length <= 1,
     hoverClass : "hover",
     drop : dropItemInfo,
   });
@@ -67,7 +67,6 @@ function movePieces(turn) {
 // Do a rock paper scissors console game-board
 //In a giant switch statement???
 // BUT OF COURSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
 function onClickInfo(event, ui) {
   var xCoor = $(this).parent().attr("data-col");
@@ -85,7 +84,21 @@ function dropItemInfo(event, ui) {
   var tileColumn = parseInt($(this).attr("data-col"));
   console.log("tile:", tile);
   console.log("Final Position of piece: [", tileRow, ",", tileColumn, "]");
-  $(this).append($(chessPiece).css({"top": 0, "left":0}));
+  console.log("original position tile", tile.originalPosition);
+
+  // $(this).append($(chessPiece).css({"top": 0, "left":0}));
+
+  console.log("tile.length", tile.children().length);
+  if (tile.children().length < 1) {
+
+  }
+  else {
+    $(this).droppable({
+      drop: function() {
+          ui.draggable.draggable({"revert": true});
+      }
+    });
+  }
   _findTile(tileRow, tileColumn);
   collisionDetect(ui, event, tile);
   // detectColor(tile);
@@ -114,6 +127,7 @@ function collisionDetect(ui, event, tile) {
   var victim = $(childrenArray[0]);
   var attacker = $(childrenArray[1]);
   kill(ui, event, tile, victim);
+  // goAway(ui, event, tile, attacker);
 }
 
 function kill(ui, event, tile, victim) {
@@ -123,6 +137,13 @@ function kill(ui, event, tile, victim) {
     ui.draggable.draggable({revert: true});
   }
 }
+
+// function goAway(ui, event, tile, attacker) {
+//   var sameColor = detectColor(tile);
+//   if (sameColor) {
+//     ui.draggable.draggable({revert: "invalid"});
+//   }
+// }
 
 
 function detectColor(tile) {
