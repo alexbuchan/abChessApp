@@ -72,14 +72,15 @@ function onClickInfo(event, ui) {
   var xCoor = $(this).parent().attr("data-col");
   var yCoor = $(this).parent().attr("data-row");
   var $tile = $(this).parent();
-  console.log("Initial Position of", $(this).attr("name"), ": [", yCoor, ",", xCoor, "]");
-  console.log("tile", $tile);
-  console.log("End onClickInfo()");
+  // console.log("Initial Position of", $(this).attr("name"), ": [", yCoor, ",", xCoor, "]");
+  // console.log("tile", $tile);
+  // console.log("End onClickInfo()");
 }
 
 function dropItemInfo(event, ui) {
   var $tile = $(this);
   var chessPiece = ui.draggable;
+  console.log("chessPiece", chessPiece);
   var $tileRow = parseInt($(this).attr("data-row"));
   var $tileColumn = parseInt($(this).attr("data-col"));
   console.log("$tile:", $tile);
@@ -93,16 +94,21 @@ function dropItemInfo(event, ui) {
     $(this).append($(chessPiece).css({"top": 0, "left":0}));
   }
   else {
-    $(this).droppable({
-      drop: function() {
-          ui.draggable.draggable({"revert": true});
-      }
-    });
-    ui.draggable.css({position: "relative", top: "0px", left: "0px"});
+    if (detectColor(event, ui, $tile, chessPiece)) {
+      $(this).droppable({
+        drop: function() {
+            ui.draggable.draggable({"revert": true});
+        }
+      });
+      ui.draggable.css({position: "relative", top: "0px", left: "0px"});
+    }
+    else {
+      var childrenArray = $tile.children();
+      var victim = $(childrenArray[0]);
+      victim.remove();
+      $(this).append($(chessPiece).css({"top": 0, "left":0}));
+    }
   }
-  _findTile($tileRow, $tileColumn);
-  collisionDetect(ui, event, $tile);
-  // detectColor($tile);
 }
 
 
@@ -121,23 +127,22 @@ function _findTile(row, col) {
   console.log("Pieces within tile [", row, ",", col, "] =>", $tileLength);
 }
 
-function collisionDetect(ui, event, $tile) {
-  var sameColor = detectColor($tile);
-  console.log("sameColor", sameColor);
-  var childrenArray = $tile.children();
-  var victim = $(childrenArray[0]);
-  var attacker = $(childrenArray[1]);
-  kill(ui, event, $tile, victim);
-  // goAway(ui, event, $tile, attacker);
-}
-
-function kill(ui, event, $tile, victim) {
-  var sameColor = detectColor($tile);
-  if (!sameColor) {
-    victim.remove();
-    ui.draggable.draggable({revert: true});
-  }
-}
+// function collisionDetect(ui, event, $tile) {
+//   // var sameColor = detectColor($tile);
+//   var childrenArray = $tile.children();
+//   var victim = $(childrenArray[0]);
+//   var attacker = $(childrenArray[1]);
+//   kill(ui, event, $tile, victim);
+//   // goAway(ui, event, $tile, attacker);
+// }
+//
+// function kill(ui, event, $tile, victim) {
+//   var sameColor = detectColor($tile);
+//   if (!sameColor) {
+//     victim.remove();
+//     ui.draggable.draggable({revert: true});
+//   }
+// }
 
 // function goAway(ui, event, $tile, attacker) {
 //   var sameColor = detectColor($tile);
@@ -147,13 +152,12 @@ function kill(ui, event, $tile, victim) {
 // }
 
 
-function detectColor($tile) {
+function detectColor(event, ui, $tile, chessPiece) {
   console.log("Start Function detectColor()");
   var childrenArray = $tile.children();
-  if (childrenArray.length <= 1) { return "No detection needed."; }
+
   var victimColor = $(childrenArray[0]).attr("color");
-  var attackerColor = $(childrenArray[1]).attr("color");
-  console.log(victimColor === attackerColor);
+  var attackerColor = chessPiece.attr("color");
   if (victimColor === attackerColor) { return true; }
   else { return false; }
 }
