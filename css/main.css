@@ -23,15 +23,15 @@ h1 {
 }
 
 .whiteGraveyard {
-  float: left;
-  margin-top: 10%;
-  margin-left: 7%;
+  position: absolute;
+  left: 20px;
+  top: 70px;
 }
 
 .blackGraveyard {
-  float: right;
-  margin-top: 10%;
-  margin-right: 7%;
+  position: absolute;
+  right: 20px;
+  top: 70px;
 }
 
 .container {

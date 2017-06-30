@@ -66,10 +66,10 @@ function movePieces() {
   //   containment: $("#game-board"),
   //   start: onClickInfo
   // });
-  // $(".tile").droppable({
-  //   // hoverClass : "hover",
-  //   drop : dropItemInfo,
-  // });
+  $(".tile").droppable({
+    // hoverClass : "hover",
+    drop : getPieceInfo,
+  });
 }
 
 function onClickInfo(event, ui) {
@@ -79,15 +79,36 @@ function onClickInfo(event, ui) {
   $(this).data('previousTile', $tile);
 }
 
-function dropItemInfo(event, ui) {
+function getPieceInfo(event, ui) {
+  console.log("getPieceInfo()!!!");
   var $tile = $(this);
+
   var chessPiece = ui.draggable;
-  var chessPieceRow = chessPiece.attr("data-row");
-  var chessPieceColumn = chessPiece.attr("data-col");
-  console.log("chessPieceRow", chessPieceRow);
-  console.log("chessPieceColumn", chessPieceColumn);
-  var $tileRow = parseInt($(this).attr("data-row"));
-  var $tileColumn = parseInt($(this).attr("data-col"));
+  var $tileRow = parseInt($tile.attr("data-row"));
+  var $tileColumn = parseInt($tile.attr("data-col"));
+
+  chessPiece.attr("data-row", $tileRow);
+  chessPiece.attr("data-col", $tileColumn);
+
+  $pieceLocation = [$tileRow, $tileColumn];
+  console.log("$pieceLocation", $pieceLocation);
+
+}
+
+function dropItemInfo(event, ui) {
+  console.log("dropItemInfo()!!!");
+  var $tile = $(this);
+
+  var chessPiece = ui.draggable;
+  var $tileRow = parseInt($tile.attr("data-row"));
+  var $tileColumn = parseInt($tile.attr("data-col"));
+
+  // chessPiece.attr("data-row", $tileRow);
+  // chessPiece.attr("data-col", $tileColumn);
+  //
+  // $pieceLocation = [$tileRow, $tileColumn];
+  // console.log("$pieceLocation", $pieceLocation);
+
   if ($tile.children().length < 1) {
     $tile.append($(chessPiece).css({"top": 0, "left":0}));
     $($tile).attr("hosting", true);
@@ -149,13 +170,14 @@ function _findTile(row, col) {
 
 var game;
 var $allAvailableTiles = [];
+var $pieceLocation = [];
 $(document).ready(function() {
   game = new Game();
   game.addPieces(chessObjects);
   movePieces();
   $allAvailableTiles = findFreeTiles();
   console.log("$allAvailableTiles", JSON.stringify($allAvailableTiles));
-  var pieceMoves = findPieceMovePossibilities();
+  var pieceMoves = findPieceMovePossibilities($pieceLocation);
   console.log("pieceMoves", JSON.stringify(pieceMoves));
   var x = filterTilesForPiece($allAvailableTiles, pieceMoves);
   console.log("x", JSON.stringify(x));
@@ -177,12 +199,13 @@ function findFreeTiles() {
   return freeTiles;
 }
 
-function findPieceMovePossibilities() {
+function findPieceMovePossibilities($pieceLocation) {
   var knightRow = $('[name="White Kingside Knight"]').parent().attr("data-row");
   var knightCol = $('[name="White Kingside Knight"]').parent().attr("data-col");
   knightRow = parseInt(knightRow);
   knightCol = parseInt(knightCol);
-  var knightLocation = [knightRow, knightCol];
+  console.log("$pieceLocation", $pieceLocation);
+  var knightLocation = $pieceLocation;
 
   var y = knightMoves(knightLocation);
   return y;
@@ -193,7 +216,6 @@ function filterTilesForPiece(masterArray, arrayFilter) {
   $(".tile").removeClass("hover");
   arrayFilter.forEach(function (coordinates, index) {
     var tileSelector = "[data-row=" + coordinates[0] + "][data-col=" + coordinates[1] + "]";
-    var pieceSelector = [];
     $(".piece").draggable({
       containment: $("#game-board"),
       start: onClickInfo,
