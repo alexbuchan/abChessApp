@@ -75,29 +75,29 @@ black_LightBishop : new Bishop("Black Lightsquare Bishop", "Black", {row : 0, co
 black_DarkBishop : new Bishop("Black Darksquare Bishop", "Black", {row : 0, column : 5}, "./images/black-pieces/black-bishop.png", ""),
 //Knights
 
-white_KsKnight : new Knight("Knight", "White", {row : 7, column : 6}, "./images/white-pieces/white-knight.png", ""),
-white_QsKnight : new Knight("Knight", "White", {row : 7, column : 1}, "./images/white-pieces/white-knight.png", ""),
-black_KsKnight : new Knight("Knight", "Black", {row : 0, column : 1}, "./images/black-pieces/black-knight.png", ""),
-black_QsKnight : new Knight("Knight", "Black", {row : 0, column : 6}, "./images/black-pieces/black-knight.png", ""),
+white_KsKnight : new Knight("White Kingside Knight", "White", {row : 7, column : 6}, "./images/white-pieces/white-knight.png", ""),
+white_QsKnight : new Knight("White Queenside Knight", "White", {row : 7, column : 1}, "./images/white-pieces/white-knight.png", ""),
+black_KsKnight : new Knight("Black Kingside Knight", "Black", {row : 0, column : 1}, "./images/black-pieces/black-knight.png", ""),
+black_QsKnight : new Knight("Black Queenside Knight", "Black", {row : 0, column : 6}, "./images/black-pieces/black-knight.png", ""),
 //Pawns
 
-white_APawn : new Pawn("Pawn", "White", {row : 6, column : 0}, "./images/white-pieces/white-pawn.png", ""),
-white_BPawn : new Pawn("Pawn", "White", {row : 6, column : 1}, "./images/white-pieces/white-pawn.png", ""),
-white_CPawn : new Pawn("Pawn", "White", {row : 6, column : 2}, "./images/white-pieces/white-pawn.png", ""),
-white_DPawn : new Pawn("Pawn", "White", {row : 6, column : 3}, "./images/white-pieces/white-pawn.png", ""),
-white_EPawn : new Pawn("Pawn", "White", {row : 6, column : 4}, "./images/white-pieces/white-pawn.png", ""),
-white_FPawn : new Pawn("Pawn", "White", {row : 6, column : 5}, "./images/white-pieces/white-pawn.png", ""),
-white_GPawn : new Pawn("Pawn", "White", {row : 6, column : 6}, "./images/white-pieces/white-pawn.png", ""),
-white_HPawn : new Pawn("Pawn", "White", {row : 6, column : 7}, "./images/white-pieces/white-pawn.png", ""),
+white_APawn : new Pawn("White A Pawn", "White", {row : 6, column : 0}, "./images/white-pieces/white-pawn.png", ""),
+white_BPawn : new Pawn("White B Pawn", "White", {row : 6, column : 1}, "./images/white-pieces/white-pawn.png", ""),
+white_CPawn : new Pawn("White C Pawn", "White", {row : 6, column : 2}, "./images/white-pieces/white-pawn.png", ""),
+white_DPawn : new Pawn("White D Pawn", "White", {row : 6, column : 3}, "./images/white-pieces/white-pawn.png", ""),
+white_EPawn : new Pawn("White E Pawn", "White", {row : 6, column : 4}, "./images/white-pieces/white-pawn.png", ""),
+white_FPawn : new Pawn("White F Pawn", "White", {row : 6, column : 5}, "./images/white-pieces/white-pawn.png", ""),
+white_GPawn : new Pawn("White G Pawn", "White", {row : 6, column : 6}, "./images/white-pieces/white-pawn.png", ""),
+white_HPawn : new Pawn("White H Pawn", "White", {row : 6, column : 7}, "./images/white-pieces/white-pawn.png", ""),
 
-black_APawn : new Pawn("Pawn", "Black", {row : 1, column : 0}, "./images/black-pieces/black-pawn.png", ""),
-black_BPawn : new Pawn("Pawn", "Black", {row : 1, column : 1}, "./images/black-pieces/black-pawn.png", ""),
-black_CPawn : new Pawn("Pawn", "Black", {row : 1, column : 2}, "./images/black-pieces/black-pawn.png", ""),
-black_DPawn : new Pawn("Pawn", "Black", {row : 1, column : 3}, "./images/black-pieces/black-pawn.png", ""),
-black_EPawn : new Pawn("Pawn", "Black", {row : 1, column : 4}, "./images/black-pieces/black-pawn.png", ""),
-black_FPawn : new Pawn("Pawn", "Black", {row : 1, column : 5}, "./images/black-pieces/black-pawn.png", ""),
-black_GPawn : new Pawn("Pawn", "Black", {row : 1, column : 6}, "./images/black-pieces/black-pawn.png", ""),
-black_HPawn : new Pawn("Pawn", "Black", {row : 1, column : 7}, "./images/black-pieces/black-pawn.png", "")
+black_APawn : new Pawn("Black A Pawn", "Black", {row : 1, column : 0}, "./images/black-pieces/black-pawn.png", ""),
+black_BPawn : new Pawn("Black B Pawn", "Black", {row : 1, column : 1}, "./images/black-pieces/black-pawn.png", ""),
+black_CPawn : new Pawn("Black C Pawn", "Black", {row : 1, column : 2}, "./images/black-pieces/black-pawn.png", ""),
+black_DPawn : new Pawn("Black D Pawn", "Black", {row : 1, column : 3}, "./images/black-pieces/black-pawn.png", ""),
+black_EPawn : new Pawn("Black E Pawn", "Black", {row : 1, column : 4}, "./images/black-pieces/black-pawn.png", ""),
+black_FPawn : new Pawn("Black F Pawn", "Black", {row : 1, column : 5}, "./images/black-pieces/black-pawn.png", ""),
+black_GPawn : new Pawn("Black G Pawn", "Black", {row : 1, column : 6}, "./images/black-pieces/black-pawn.png", ""),
+black_HPawn : new Pawn("Black H Pawn", "Black", {row : 1, column : 7}, "./images/black-pieces/black-pawn.png", "")
 };
 
 

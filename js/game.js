@@ -48,6 +48,7 @@ Game.prototype.addPieces = function (chessObjects) {
       .attr("alive", true)
       .attr("name", object.name)
       .attr("src", object.image)
+      .attr("data-row", object.location.row).attr("data-col", object.location.column)
     );
     $tile.attr("hosting", true);
     if (object.color === "White") {
@@ -61,10 +62,10 @@ Game.prototype.addPieces = function (chessObjects) {
 };
 
 function movePieces() {
-  $(".piece").draggable({
-    containment: $("#game-board"),
-    start: onClickInfo
-  });
+  // $(".piece").draggable({
+  //   containment: $("#game-board"),
+  //   start: onClickInfo
+  // });
   // $(".tile").droppable({
   //   // hoverClass : "hover",
   //   drop : dropItemInfo,
@@ -81,6 +82,10 @@ function onClickInfo(event, ui) {
 function dropItemInfo(event, ui) {
   var $tile = $(this);
   var chessPiece = ui.draggable;
+  var chessPieceRow = chessPiece.attr("data-row");
+  var chessPieceColumn = chessPiece.attr("data-col");
+  console.log("chessPieceRow", chessPieceRow);
+  console.log("chessPieceColumn", chessPieceColumn);
   var $tileRow = parseInt($(this).attr("data-row"));
   var $tileColumn = parseInt($(this).attr("data-col"));
   if ($tile.children().length < 1) {
@@ -153,8 +158,7 @@ $(document).ready(function() {
   var pieceMoves = findPieceMovePossibilities();
   console.log("pieceMoves", JSON.stringify(pieceMoves));
   var x = filterTilesForPiece($allAvailableTiles, pieceMoves);
-  console.log("x", JSON.stringify(
-  ));
+  console.log("x", JSON.stringify(x));
 });
 
 
@@ -188,8 +192,14 @@ function filterTilesForPiece(masterArray, arrayFilter) {
   $(".tile").droppable({disable: true});
   $(".tile").removeClass("hover");
   arrayFilter.forEach(function (coordinates, index) {
-    var selector = "[data-row=" + coordinates[0] + "][data-col=" + coordinates[1] + "]";
-    $(selector).droppable({
+    var tileSelector = "[data-row=" + coordinates[0] + "][data-col=" + coordinates[1] + "]";
+    var pieceSelector = [];
+    $(".piece").draggable({
+      containment: $("#game-board"),
+      start: onClickInfo,
+      revert: true
+    });
+    $(tileSelector).droppable({
       hoverClass : "hover",
       drop : dropItemInfo,
     });
