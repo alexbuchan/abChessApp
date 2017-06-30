@@ -62,14 +62,14 @@ Game.prototype.addPieces = function (chessObjects) {
 };
 
 function movePieces() {
-  // $(".piece").draggable({
-  //   containment: $("#game-board"),
-  //   start: onClickInfo
-  // });
-  // $(".tile").droppable({
-  //   // hoverClass : "hover",
-  //   drop : dropItemInfo,
-  // });
+  $(".piece").draggable({
+    containment: $("#game-board"),
+    start: onClickInfo
+  });
+  $(".tile").droppable({
+    // hoverClass : "hover",
+    drop : dropItemInfo,
+  });
 }
 
 function onClickInfo(event, ui) {
@@ -154,11 +154,11 @@ $(document).ready(function() {
   game.addPieces(chessObjects);
   movePieces();
   $allAvailableTiles = findFreeTiles();
-  console.log("$allAvailableTiles", JSON.stringify($allAvailableTiles));
-  var pieceMoves = findPieceMovePossibilities();
-  console.log("pieceMoves", JSON.stringify(pieceMoves));
-  var x = filterTilesForPiece($allAvailableTiles, pieceMoves);
-  console.log("x", JSON.stringify(x));
+  // console.log("$allAvailableTiles", JSON.stringify($allAvailableTiles));
+  // var pieceMoves = findPieceMovePossibilities();
+  // console.log("pieceMoves", JSON.stringify(pieceMoves));
+  // var x = filterTilesForPiece($allAvailableTiles, pieceMoves);
+  // console.log("x", JSON.stringify(x));
 });
 
 
@@ -176,45 +176,45 @@ function findFreeTiles() {
 
   return freeTiles;
 }
-
-function findPieceMovePossibilities() {
-  var knightRow = $('[name="White Kingside Knight"]').parent().attr("data-row");
-  var knightCol = $('[name="White Kingside Knight"]').parent().attr("data-col");
-  knightRow = parseInt(knightRow);
-  knightCol = parseInt(knightCol);
-  var knightLocation = [knightRow, knightCol];
-
-  var y = knightMoves(knightLocation);
-  return y;
-}
-
-function filterTilesForPiece(masterArray, arrayFilter) {
-  $(".tile").droppable({disable: true});
-  $(".tile").removeClass("hover");
-  arrayFilter.forEach(function (coordinates, index) {
-    var tileSelector = "[data-row=" + coordinates[0] + "][data-col=" + coordinates[1] + "]";
-    var pieceSelector = [];
-    $(".piece").draggable({
-      containment: $("#game-board"),
-      start: onClickInfo,
-      revert: true
-    });
-    $(tileSelector).droppable({
-      hoverClass : "hover",
-      drop : dropItemInfo,
-    });
-    // $(selector).addClass("hover");
-    // $(selector).on("click", )
-  });
-}
-
-
-function toMatrix(arr, width) {
-  return arr.reduce(function (rows, key, index) {
-    return (index % width == 0 ? rows.push([key])
-      : rows[rows.length-1].push(key)) && rows;
-  }, []);
-}
+//
+// function findPieceMovePossibilities() {
+//   var knightRow = $('[name="White Kingside Knight"]').parent().attr("data-row");
+//   var knightCol = $('[name="White Kingside Knight"]').parent().attr("data-col");
+//   knightRow = parseInt(knightRow);
+//   knightCol = parseInt(knightCol);
+//   var knightLocation = [knightRow, knightCol];
+//
+//   var y = knightMoves(knightLocation);
+//   return y;
+// }
+//
+// function filterTilesForPiece(masterArray, arrayFilter) {
+//   $(".tile").droppable({disable: true});
+//   $(".tile").removeClass("hover");
+//   arrayFilter.forEach(function (coordinates, index) {
+//     var tileSelector = "[data-row=" + coordinates[0] + "][data-col=" + coordinates[1] + "]";
+//     var pieceSelector = [];
+//     $(".piece").draggable({
+//       containment: $("#game-board"),
+//       start: onClickInfo,
+//       revert: true
+//     });
+//     $(tileSelector).droppable({
+//       hoverClass : "hover",
+//       drop : dropItemInfo,
+//     });
+//     // $(selector).addClass("hover");
+//     // $(selector).on("click", )
+//   });
+// }
+//
+//
+// function toMatrix(arr, width) {
+//   return arr.reduce(function (rows, key, index) {
+//     return (index % width == 0 ? rows.push([key])
+//       : rows[rows.length-1].push(key)) && rows;
+//   }, []);
+// }
 
 //COLLISION DETECTION AND DEATH
 //Piece color will influence whether collisionDetect will not allow it to move to the same div (and not be appended)
