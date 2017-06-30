@@ -23,12 +23,21 @@ Game.prototype.generateTiles = function() {
     for (var col = 0; col < this.boardSize; col++) {
       $("#row" + row).append($('<div>')
         .addClass("tile")
+        .attr("hosting", false)
         .attr("data-row", row)
         .attr("data-col", col));
     }
     createCheckerboardDesign();
   }
 };
+
+function createCheckerboardDesign() {
+  $(".row:odd .tile:odd").addClass("blackTile");                                //Creates the checkerboard style.
+  $(".row:even .tile:even").addClass("blackTile");
+  $(".row:odd .tile:even").addClass("whiteTile");
+  $(".row:even .tile:odd").addClass("whiteTile");
+}
+
 
 Game.prototype.addPieces = function (chessObjects) {
   for (var objectIndex in chessObjects) {
@@ -51,74 +60,80 @@ Game.prototype.addPieces = function (chessObjects) {
   }
 };
 
-function movePieces(turn) {
+function movePieces() {
   $(".piece").draggable({
+    containment: $("#game-board"),
     start: onClickInfo
   });
-  $(".tile").droppable({
-    // accept : $(".piece").parent().length <= 1,
-    hoverClass : "hover",
-    drop : dropItemInfo,
-  });
+  // $(".tile").droppable({
+  //   // hoverClass : "hover",
+  //   drop : dropItemInfo,
+  // });
 }
-
-//Generic Functions
-// it's just too hard, give up....
-// Do a rock paper scissors console game-board
-//In a giant switch statement???
-// BUT OF COURSE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 function onClickInfo(event, ui) {
   var xCoor = $(this).parent().attr("data-col");
   var yCoor = $(this).parent().attr("data-row");
   var $tile = $(this).parent();
-  // console.log("Initial Position of", $(this).attr("name"), ": [", yCoor, ",", xCoor, "]");
-  // console.log("tile", $tile);
-  // console.log("End onClickInfo()");
+  $(this).data('previousTile', $tile);
 }
 
 function dropItemInfo(event, ui) {
   var $tile = $(this);
   var chessPiece = ui.draggable;
-  console.log("chessPiece", chessPiece);
   var $tileRow = parseInt($(this).attr("data-row"));
   var $tileColumn = parseInt($(this).attr("data-col"));
-  console.log("$tile:", $tile);
-  console.log("Final Position of piece: [", $tileRow, ",", $tileColumn, "]");
-  console.log("original position $tile", $tile.originalPosition);
-
-  // $(this).append($(chessPiece).css({"top": 0, "left":0}));
-
-  console.log("tile.length", $tile.children().length);
   if ($tile.children().length < 1) {
-    $(this).append($(chessPiece).css({"top": 0, "left":0}));
+    $tile.append($(chessPiece).css({"top": 0, "left":0}));
+    $($tile).attr("hosting", true);
+    var previousTile = $(ui.draggable).data("previousTile");
+    console.log(previousTile.children().length);
+    previousTile.attr("hosting", false);
   }
   else {
     if (detectColor(event, ui, $tile, chessPiece)) {
-      $(this).droppable({
-        drop: function() {
-            ui.draggable.draggable({"revert": true});
-        }
-      });
-      ui.draggable.css({position: "relative", top: "0px", left: "0px"});
+      moveInvalid(event, ui, $tile);
     }
     else {
-      var childrenArray = $tile.children();
-      var victim = $(childrenArray[0]);
-      victim.remove();
-      $(this).append($(chessPiece).css({"top": 0, "left":0}));
+      removePiece(event, ui, $tile, chessPiece);
     }
   }
 }
 
-
-function createCheckerboardDesign() {
-  $(".row:odd .tile:odd").addClass("blackTile");                                //Creates the checkerboard style.
-  $(".row:even .tile:even").addClass("blackTile");
-  $(".row:odd .tile:even").addClass("whiteTile");
-  $(".row:even .tile:odd").addClass("whiteTile");
+function moveInvalid(event, ui, $tile) {
+  $tile.droppable({
+    drop: function() {
+        ui.draggable.draggable({"revert": true});
+    }
+  });
+  ui.draggable.css({position: "relative", top: "0px", left: "0px"});
 }
 
+function removePiece(event, ui, $tile, chessPiece) {
+  var childrenArray = $tile.children();
+  var victim = $(childrenArray[0]);
+  var victimColor = victim.attr("color");
+  switch (victimColor) {
+    case "white":
+      $(".whiteGraveyard").append($(victim));
+      break;
+    case "black":
+      $(".blackGraveyard").append($(victim));
+      break;
+  }
+
+  victim.css({position: "relative"});
+  victim.removeClass("piece");
+  $tile.append($(chessPiece).css({"top": 0, "left":0}));
+}
+
+function detectColor(event, ui, $tile, chessPiece) {
+  var childrenArray = $tile.children();
+  var victimColor = $(childrenArray[0]).attr("color");
+  var attackerColor = chessPiece.attr("color");
+  if (victimColor === attackerColor) { return true; }
+  else { return false; }
+}
 
 function _findTile(row, col) {
   var $tile =  $(".tile[data-row=" + row + "][data-col=" + col + "]");
@@ -127,53 +142,69 @@ function _findTile(row, col) {
   console.log("Pieces within tile [", row, ",", col, "] =>", $tileLength);
 }
 
-// function collisionDetect(ui, event, $tile) {
-//   // var sameColor = detectColor($tile);
-//   var childrenArray = $tile.children();
-//   var victim = $(childrenArray[0]);
-//   var attacker = $(childrenArray[1]);
-//   kill(ui, event, $tile, victim);
-//   // goAway(ui, event, $tile, attacker);
-// }
-//
-// function kill(ui, event, $tile, victim) {
-//   var sameColor = detectColor($tile);
-//   if (!sameColor) {
-//     victim.remove();
-//     ui.draggable.draggable({revert: true});
-//   }
-// }
-
-// function goAway(ui, event, $tile, attacker) {
-//   var sameColor = detectColor($tile);
-//   if (sameColor) {
-//     ui.draggable.draggable({revert: "invalid"});
-//   }
-// }
-
-
-function detectColor(event, ui, $tile, chessPiece) {
-  console.log("Start Function detectColor()");
-  var childrenArray = $tile.children();
-
-  var victimColor = $(childrenArray[0]).attr("color");
-  var attackerColor = chessPiece.attr("color");
-  if (victimColor === attackerColor) { return true; }
-  else { return false; }
-}
-
 var game;
-var run = true;
-var whiteTurn = true;
-var blackTurn = false;
-var turn = [];
+var $allAvailableTiles = [];
 $(document).ready(function() {
   game = new Game();
   game.addPieces(chessObjects);
-  movePieces(turn);
-
+  movePieces();
+  $allAvailableTiles = findFreeTiles();
+  console.log("$allAvailableTiles", JSON.stringify($allAvailableTiles));
+  var pieceMoves = findPieceMovePossibilities();
+  console.log("pieceMoves", JSON.stringify(pieceMoves));
+  var x = filterTilesForPiece($allAvailableTiles, pieceMoves);
+  console.log("x", JSON.stringify(
+  ));
 });
 
+
+function findFreeTiles() {
+  var freeTiles = [];
+  console.log($(".tile").attr("data-row"));
+  // freeTiles = $(".tile[hosting="+false+"]");
+  //   console.log("freeTiles", freeTiles);
+  $(".tile[hosting="+false+"]").each(function () {
+    var $this = $(this);
+    var row = parseInt($this.attr("data-row")); //or this.value
+    var col = parseInt($this.attr('data-col')); //or $this.data('X')
+    freeTiles.push([row, col]);
+});
+
+  return freeTiles;
+}
+
+function findPieceMovePossibilities() {
+  var knightRow = $('[name="White Kingside Knight"]').parent().attr("data-row");
+  var knightCol = $('[name="White Kingside Knight"]').parent().attr("data-col");
+  knightRow = parseInt(knightRow);
+  knightCol = parseInt(knightCol);
+  var knightLocation = [knightRow, knightCol];
+
+  var y = knightMoves(knightLocation);
+  return y;
+}
+
+function filterTilesForPiece(masterArray, arrayFilter) {
+  $(".tile").droppable({disable: true});
+  $(".tile").removeClass("hover");
+  arrayFilter.forEach(function (coordinates, index) {
+    var selector = "[data-row=" + coordinates[0] + "][data-col=" + coordinates[1] + "]";
+    $(selector).droppable({
+      hoverClass : "hover",
+      drop : dropItemInfo,
+    });
+    // $(selector).addClass("hover");
+    // $(selector).on("click", )
+  });
+}
+
+
+function toMatrix(arr, width) {
+  return arr.reduce(function (rows, key, index) {
+    return (index % width == 0 ? rows.push([key])
+      : rows[rows.length-1].push(key)) && rows;
+  }, []);
+}
 
 //COLLISION DETECTION AND DEATH
 //Piece color will influence whether collisionDetect will not allow it to move to the same div (and not be appended)
